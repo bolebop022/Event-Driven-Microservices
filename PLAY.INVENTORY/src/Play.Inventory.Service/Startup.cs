@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Play.Common.MongoDB;
 using Play.Inventory.Serivce.Clients;
@@ -33,7 +34,7 @@ namespace Play.Inventory.Service
             services.AddMongo()
                     .AddMongoRepository<InventoryItem>("inventoryitems");
 
-    #if DEBUG
+    // #if DEBUG
             var certificatePath = "/home/bonganelebopo/dev/PLAY.INVENTORY/src/https.pfx";
             var certificatePassword = "GrushiMaclaude24!";
             
@@ -55,11 +56,17 @@ namespace Play.Inventory.Service
             })
             .AddTransientHttpErrorPolicy(builder => builder.Or<TimeoutRejectedException>().WaitAndRetryAsync(
                 5,
-                retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))
+                retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                onRetry: (outcome, timeSpan, retryAttempt) =>
+                {
+                    var serviceProvder = services.BuildServiceProvider();
+                    serviceProvder.GetService<ILogger<CatalogClient>>() ?
+                      .LogWarning($"Delaying for {timeSpan.TotalSeconds} seconds, then making retry {retryAttempt}");
+                }
             ))
             .AddPolicyHandler(Policy.TimeoutAsync<HttpResponseMessage>(1))
             .ConfigurePrimaryHttpMessageHandler(() => handler);
-    #endif
+    // #endif
 
             // services.AddHttpClient<CatalogClient>(client =>
             // {
