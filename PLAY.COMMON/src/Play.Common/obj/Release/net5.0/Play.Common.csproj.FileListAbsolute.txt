@@ -1,0 +1,12 @@
+/home/bonganelebopo/dev/PLAY.COMMON/src/Play.Common/bin/Release/net5.0/Play.Common.deps.json
+/home/bonganelebopo/dev/PLAY.COMMON/src/Play.Common/bin/Release/net5.0/Play.Common.dll
+/home/bonganelebopo/dev/PLAY.COMMON/src/Play.Common/bin/Release/net5.0/Play.Common.pdb
+/home/bonganelebopo/dev/PLAY.COMMON/src/Play.Common/obj/Release/net5.0/Play.Common.csproj.AssemblyReference.cache
+/home/bonganelebopo/dev/PLAY.COMMON/src/Play.Common/obj/Release/net5.0/Play.Common.GeneratedMSBuildEditorConfig.editorconfig
+/home/bonganelebopo/dev/PLAY.COMMON/src/Play.Common/obj/Release/net5.0/Play.Common.AssemblyInfoInputs.cache
+/home/bonganelebopo/dev/PLAY.COMMON/src/Play.Common/obj/Release/net5.0/Play.Common.AssemblyInfo.cs
+/home/bonganelebopo/dev/PLAY.COMMON/src/Play.Common/obj/Release/net5.0/Play.Common.csproj.CoreCompileInputs.cache
+/home/bonganelebopo/dev/PLAY.COMMON/src/Play.Common/obj/Release/net5.0/Play.Common.dll
+/home/bonganelebopo/dev/PLAY.COMMON/src/Play.Common/obj/Release/net5.0/refint/Play.Common.dll
+/home/bonganelebopo/dev/PLAY.COMMON/src/Play.Common/obj/Release/net5.0/Play.Common.pdb
+/home/bonganelebopo/dev/PLAY.COMMON/src/Play.Common/obj/Release/net5.0/ref/Play.Common.dll

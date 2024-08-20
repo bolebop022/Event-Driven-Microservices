@@ -1,0 +1,26 @@
+{
+    "configurations": [
+    
+        
+
+        
+        {
+            "name": ".NET Core Launch (web)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/Play.Catalog.Service/bin/Debug/net5.0/Play.Catalog.Service.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        
+    ],
+    "compounds": []    
+}
