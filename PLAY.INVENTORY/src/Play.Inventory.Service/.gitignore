@@ -1,0 +1,10 @@
+# Ignore build output and intermediate files
+bin/
+obj/
+
+# User-specific files
+.vscode/
+
+# Nuget packages
+packages/
+
