@@ -1,11 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Play.Common;
-using Play.Inventory.Serivce.Clients;
 using Play.Inventory.Serivce.Dtos;
 using Play.Inventory.Serivce.Entities;
 using Play.Inventory.Service;

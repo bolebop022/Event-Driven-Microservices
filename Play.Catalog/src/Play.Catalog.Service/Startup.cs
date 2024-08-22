@@ -7,8 +7,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
 using Play.Catalog.Service.Entities;
+using Play.Common.MassTransit;
 using Play.Common.MongoDB;
-using Play.Common.RabbitMQ;
 using Play.Common.Settings;
 
 namespace Play.Catalog.Service
@@ -33,7 +33,7 @@ namespace Play.Catalog.Service
             
             services.AddMongo()
                     .AddMongoRepository<Item>("items")
-                    .AddMassTransitWithRabbitMQ();
+                    .AddMassTransitWithRabbitMq();
           
             services.AddControllers(options =>
             {
