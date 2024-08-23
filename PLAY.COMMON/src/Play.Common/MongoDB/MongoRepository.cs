@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using MongoDB.Driver;
@@ -35,7 +34,7 @@ namespace Play.Common.MongoDB
 
             return await dbCollection.Find(filter).FirstOrDefaultAsync();
         }
-          
+
         public async Task<T> GetAsync(Expression<Func<T, bool>> filter)
         {
 
