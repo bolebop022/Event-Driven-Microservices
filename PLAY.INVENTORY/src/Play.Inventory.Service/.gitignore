@@ -1,7 +1,7 @@
 # Ignore build output and intermediate files
 bin/
 obj/
-
+**/*.sln
 # User-specific files
 .vscode/
 
