@@ -13,7 +13,6 @@
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageReference Include="Moq" Version="4.20.71" />
-    <PackageReference Include="Play.Catalog.Contracts" Version="1.0.0" />
     <PackageReference Include="xunit" Version="2.5.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
   </ItemGroup>
@@ -23,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Play.Inventory.Service\Play.Inventory.Service.csproj" />
+    <ProjectReference Include="..\src\Play.Catalog.Service\Play.Catalog.Service.csproj" />
   </ItemGroup>
 
 </Project>
