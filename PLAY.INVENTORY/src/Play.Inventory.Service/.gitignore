@@ -4,7 +4,7 @@ obj/
 **/*.sln
 # User-specific files
 .vscode/
-
+../.vscode/
 # Nuget packages
 packages/
 
