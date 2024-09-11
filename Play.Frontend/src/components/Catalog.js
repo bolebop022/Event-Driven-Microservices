@@ -20,7 +20,7 @@ export class Catalog extends Component
 
   async populateItems()
   {
-    fetch(`${window.CATALOG_ITEMS_API_URL}`)
+    fetch(`${process.env.CATALOG_ITEMS_API_URL}/api/items`)
       .then(response => { 
         return response.json(); 
       })
