@@ -21,7 +21,26 @@ services:
       - mongo
     networks:
       - mynetwork
-
+  inventory-service:
+    image: play-inventory-service
+    build:
+      context: ../PLAY.INVENTORY/src/Play.Inventory.Service
+      dockerfile: Dockerfile
+    ports:
+      - 5004:5004
+      - 5005:500
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: "https://+:6001;http://+:6000"
+      ASPNETCORE_Kestrel__Certificates__Default__Password: "password123!"
+      ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/aspnetapp.pfx"
+      MONGO_CONNECTION_STRING: "mongodb://mongo:27017"
+      RABBITMQ_HOST: "rabbitmq"
+      RABBITMQ_PORT: 5672
+    depends_on:
+      - mongo
+    networks:
+      - mynetwork
   mongo:
     image: mongo
     container_name: mongo
