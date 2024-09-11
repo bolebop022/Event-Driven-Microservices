@@ -22,6 +22,7 @@ namespace Play.Inventory.Service
     public class Startup
     {
         private const string AllowedOriginSetting = "AllowedOrigin";
+        private const string CorsPolicyName = "AllowSpecificOrigin";
 
         public Startup(IConfiguration configuration)
         {
@@ -34,6 +35,16 @@ namespace Play.Inventory.Service
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddCors(options =>{
+                options.AddPolicy(CorsPolicyName, 
+                    builder =>
+                    {
+                        builder.WithOrigins(Configuration[AllowedOriginSetting])
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+                    });
+                });
+            
             services.AddMongo()
                     .AddMongoRepository<InventoryItem>("inventoryitems")
                     .AddMongoRepository<CatalogItem>("catalogitems")
@@ -57,13 +68,14 @@ namespace Play.Inventory.Service
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Play.Inventory.Service v1"));
 
-                app.UseCors(builder =>
-                {
-                    builder.WithOrigins(Configuration[AllowedOriginSetting])
-                            .AllowAnyHeader()
-                            .AllowAnyMethod();
-                });
+                // app.UseCors(builder =>
+                // {
+                //     builder.WithOrigins(Configuration[AllowedOriginSetting])
+                //             .AllowAnyHeader()
+                //             .AllowAnyMethod();
+                // });
             }
+            app.UseCors(CorsPolicyName);
 
             app.UseHttpsRedirection();
 
