@@ -52,7 +52,7 @@ export class Catalog extends Component
     let confirmDeletion = window.confirm('Do you really wish to delete it?');
     if (confirmDeletion)
     {
-      fetch(`${window.CATALOG_ITEMS_API_URL}/${id}`, {
+      fetch(`${process.env.CATALOG_ITEMS_API_URL}/${id}`, {
         method: 'delete',
         headers: {
           'Content-Type': 'application/json'
