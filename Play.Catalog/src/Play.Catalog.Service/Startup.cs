@@ -16,6 +16,7 @@ namespace Play.Catalog.Service
     public class Startup
     {
         private const string AllowedOriginSetting = "AllowedOrigin";
+        // private const string CorsPolicyName = "All"
         
         private ServiceSettings serviceSettings;
 
@@ -30,8 +31,17 @@ namespace Play.Catalog.Service
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            serviceSettings = Configuration.GetSection(nameof(ServiceSettings)).Get<ServiceSettings>();
+            services.AddCors(options =>{
+                options.AddPolicy(AllowedOriginSetting, 
+                    builder =>
+                    {
+                        builder.WithOrigins(Configuration[AllowedOriginSetting])
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+                    });
+                });
+            
+            // serviceSettings = Configuration.GetSection(nameof(ServiceSettings)).Get<ServiceSettings>();
             
             services.AddMongo()
                     .AddMongoRepository<Item>("items")
@@ -57,13 +67,14 @@ namespace Play.Catalog.Service
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Play.Catalog.Service v1"));
 
-                app.UseCors(builder => 
-                {
-                    builder.WithOrigins(Configuration[AllowedOriginSetting])
-                            .AllowAnyHeader()
-                            .AllowAnyMethod();
-                });
+                // app.UseCors(builder => 
+                // {
+                //     builder.WithOrigins(Configuration[AllowedOriginSetting])
+                //             .AllowAnyHeader()
+                //             .AllowAnyMethod();
+                // });
             }
+            app.UseCors(AllowedOriginSetting);
 
             app.UseHttpsRedirection();
 

@@ -22,7 +22,7 @@ namespace Play.Inventory.Service
     public class Startup
     {
         private const string AllowedOriginSetting = "AllowedOrigin";
-        private const string CorsPolicyName = "AllowSpecificOrigin";
+        // private const string CorsPolicyName = "AllowSpecificOrigin";
 
         public Startup(IConfiguration configuration)
         {
@@ -36,7 +36,7 @@ namespace Play.Inventory.Service
         {
 
             services.AddCors(options =>{
-                options.AddPolicy(CorsPolicyName, 
+                options.AddPolicy(AllowedOriginSetting, 
                     builder =>
                     {
                         builder.WithOrigins(Configuration[AllowedOriginSetting])
@@ -75,7 +75,7 @@ namespace Play.Inventory.Service
                 //             .AllowAnyMethod();
                 // });
             }
-            app.UseCors(CorsPolicyName);
+            app.UseCors(AllowedOriginSetting);
 
             app.UseHttpsRedirection();
 
