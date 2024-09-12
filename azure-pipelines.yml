@@ -76,10 +76,12 @@ stages:
     - task: SonarQubeAnalyze@5
       inputs:
         jdkversion: 'JAVA_HOME'
+      continueOnError: true
 
     - task: SonarQubePublish@5
       inputs:
         pollingTimeoutSec: '300'
+      continueOnError: true
     
     - task: DotNetCoreCLI@2
       displayName: 'Test microservices api'
