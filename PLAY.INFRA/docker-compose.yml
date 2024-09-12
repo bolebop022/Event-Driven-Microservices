@@ -4,7 +4,7 @@ version: "3.7"
 
 services:
   catalog-service:
-    image: play-catalog-service
+    image: playeconomymicroservices.azurecr.io/play-catalog-service
     build:
       context: ../Play.Catalog/src/Play.Catalog.Service
       dockerfile: Dockerfile
@@ -26,7 +26,7 @@ services:
     networks:
       - mynetwork
   inventory-service:
-    image: play-inventory-service
+    image: playeconomymicroservices.azurecr.io/play-inventory-service
     build:
       context: ../PLAY.INVENTORY/src/Play.Inventory.Service
       dockerfile: Dockerfile
