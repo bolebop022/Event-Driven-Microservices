@@ -49,7 +49,7 @@ services:
       - mynetwork
   
   frontend:
-    image: play-frontend
+    image: playeconomymicroservices.azurecr.io/play-frontend
     build:
       context: ../Play.Frontend
       dockerfile: Dockerfile
