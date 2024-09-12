@@ -20,16 +20,25 @@ export class Catalog extends Component
 
   async populateItems()
   {
-    fetch(`${process.env.CATALOG_ITEMS_API_URL}/api/items`)
-      .then(response => { 
-        return response.json(); 
-      })
-      .then(returnedItems => this.setState({ items: returnedItems, loading: false, loadedSuccess: true }))
-      .catch(err =>
-      {
-        console.log(err);
-        this.setState({ items: [], loading: false, loadedSuccess: false })
-      });
+    try {
+      const response = await fetch(`${window.CATALOG_SERVICE_URL}/items`);
+      const returnedItems = await response.json();
+      this.setState({ items: returnedItems, loading: false, loadedSuccess: true });
+    } catch (err) {
+      console.error(err);
+      this.setState({ items: [], loading: false, loadedSuccess: false });
+    }
+
+    // fetch(`${window.CATALOG_SERVICE_URL}/items`)
+    //   .then(response => { 
+    //     return response.json(); 
+    //   })
+    //   .then(returnedItems => this.setState({ items: returnedItems, loading: false, loadedSuccess: true }))
+    //   .catch(err =>
+    //   {
+    //     console.log(err);
+    //     this.setState({ items: [], loading: false, loadedSuccess: false })
+    //   });
   }
 
   addItemToState = item =>
@@ -52,7 +61,7 @@ export class Catalog extends Component
     let confirmDeletion = window.confirm('Do you really wish to delete it?');
     if (confirmDeletion)
     {
-      fetch(`${process.env.CATALOG_ITEMS_API_URL}/${id}`, {
+      fetch(`${window.CATALOG_ITEMS_API_URL}/${id}`, {
         method: 'delete',
         headers: {
           'Content-Type': 'application/json'

@@ -47,6 +47,22 @@ services:
       - rabbitmq
     networks:
       - mynetwork
+  
+  frontend:
+    image: play-frontend
+    build:
+      context: ../Play.Frontend
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - catalog-service
+      - inventory-service
+    networks:
+      - mynetwork
+
   mongo:
     image: mongo
     container_name: mongo
