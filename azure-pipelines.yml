@@ -29,7 +29,13 @@ stages:
         projects: |
           PLAY.COMMON/src/Play.Common/Play.Common.csproj
           Play.Catalog/src/Play.Catalog.Contracts/Play.Catalog.Contracts.csproj
-        arguments: '--output $(Build.ArtifactStagingDirectory)/packages'
+        arguments: '--output $(Build.ArtifactStagingDirectory)'
+        
+    # Create packages folder and move .nupkg files
+    - script: |
+        mkdir -p $(Build.ArtifactStagingDirectory)/packages
+        mv $(Build.ArtifactStagingDirectory)/*.nupkg $(Build.ArtifactStagingDirectory)/packages/
+      displayName: 'Move packages to packages folder'
     
     # Debug the artifact staging directory
     - script: |
