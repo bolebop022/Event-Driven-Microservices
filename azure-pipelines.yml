@@ -6,15 +6,12 @@
 trigger:
 - main
 
-pool:
-  vmImage: ubuntu-latest
-
 stages:
 - stage: Build
   jobs:
   - job: BuildAndTest
     pool:
-      name: Local
+      name: WSL-Ubuntu
     steps:
     - task: DotNetCoreCLI@2
       inputs:
