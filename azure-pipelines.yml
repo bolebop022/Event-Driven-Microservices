@@ -1,0 +1,91 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+stages:
+- stage: Build
+  jobs:
+  - job: BuildAndTest
+    pool:
+      name: WSL-Ubuntu
+    steps:
+    # Prepare sonarqube
+    - task: SonarQubePrepare@5
+      inputs:
+        SonarQube: 'Microservices'
+        scannerMode: 'MSBuild'
+        projectKey: 'Microservices_Deployment_Microservices_Deployment'
+        projectName: 'Microservices'
+
+    # Restore packages for the custom packages first
+    - task: DotNetCoreCLI@2
+      displayName: 'Restore resources for custom packages'
+      inputs:
+        command: 'restore'
+        projects: |
+          PLAY.COMMON/src/Play.Common/Play.Common.csproj
+          Play.Catalog/src/Play.Catalog.Contracts/Play.Catalog.Contracts.csproj
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Package custom packages'
+      inputs:
+        command: pack
+        projects: |
+          PLAY.COMMON/src/Play.Common/Play.Common.csproj
+          Play.Catalog/src/Play.Catalog.Contracts/Play.Catalog.Contracts.csproj
+        arguments: '--output $(Build.ArtifactStagingDirectory)'
+
+    # Create packages folder and move .nupkg files
+    - script: |
+        mkdir -p $(Build.ArtifactStagingDirectory)/packages
+        mv $(Build.ArtifactStagingDirectory)/*.nupkg $(Build.ArtifactStagingDirectory)/packages/
+      displayName: 'Move packages to packages folder'
+    
+    # Debug the artifact staging directory
+    - script: |
+        echo "Listing contents of $(Build.ArtifactStagingDirectory)"
+        ls -la $(Build.ArtifactStagingDirectory)
+      displayName: 'List Artifact Staging Directory'
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish custom packages'
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/packages'
+        ArtifactName: 'packages'
+          
+    - task: DotNetCoreCLI@2
+      displayName: 'Restore microservices packages'
+      inputs:
+        command: 'restore'
+        projects: |
+          Play.Catalog/src/Play.Catalog.Service/Play.Catalog.Service.csproj
+          PLAY.INVENTORY/src/Play.Inventory.Service/Play.Inventory.Service.csproj
+        arguments: '--source $(Build.ArtifactStagingDirectory)/packages'
+    
+    - task: DotNetCoreCLI@2
+      displayName: 'Build microservices apis'
+      inputs:
+        command: 'build'
+        projects: |
+          Play.Catalog/src/Play.Catalog.Service/Play.Catalog.Service.csproj
+          PLAY.INVENTORY/src/Play.Inventory.Service/Play.Inventory.Service.csproj
+    - task: SonarQubeAnalyze@5
+      inputs:
+        jdkversion: 'JAVA_HOME'
+
+    - task: SonarQubePublish@6
+      inputs:
+        pollingTimeoutSec: '300'
+    
+    - task: DotNetCoreCLI@2
+      displayName: 'Test microservices api'
+      inputs:
+        command: 'test'
+        projects: |
+          PLAY.INVENTORY/Play.Inventory.UnitTests/Play.Inventory.UnitTests.csproj
+          Play.Catalog/Play.Catalog.UnitTests/Play.Catalog.UnitTests.csproj
+        arguments: '--collect "Code coverage"'
