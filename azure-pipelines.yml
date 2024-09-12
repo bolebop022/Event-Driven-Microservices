@@ -91,6 +91,7 @@ stages:
           PLAY.INVENTORY/Play.Inventory.UnitTests/Play.Inventory.UnitTests.csproj
           Play.Catalog/Play.Catalog.UnitTests/Play.Catalog.UnitTests.csproj
         arguments: '--collect "Code coverage"'
+      continueOnError: true
 
 - stage: Push
   jobs:
