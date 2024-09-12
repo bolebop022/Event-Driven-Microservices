@@ -13,17 +13,51 @@ stages:
     pool:
       name: WSL-Ubuntu
     steps:
+    # Restore packages for the custom packages first
     - task: DotNetCoreCLI@2
+      displayName: 'Restore resources for custom packages'
       inputs:
-       command: 'restore'
-       projects: '**/src/**/*.csproj'
+        command: 'restore'
+        projects: |
+          PLAY.COMMON/src/Play.Common/Play.Common.csproj
+          Play.Catalog/src/Play.Catalog.Contracts/Play.Catalog.Contracts.csproj
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Package custom packages'
+      inputs:
+        command: pack
+        projects: |
+          PLAY.COMMON/src/Play.Common/Play.Common.csproj
+          Play.Catalog/src/Play.Catalog.Contracts/Play.Catalog.Contracts.csproj
+        arguments: '--output $(Build.ArtifactStagingDirectory)/packages'
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish custom packages'
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/packages'
+        ArtifactName: 'packages'
+          
+    - task: DotNetCoreCLI@2
+      displayName: 'Restore microservices packages'
+      inputs:
+        command: 'restore'
+        projects: |
+          Play.Catalog/src/Play.Catalog.Service/Play.Catalog.Service.csproj
+          PLAY.INVENTORY/src/Play.Inventory.Service/Play.Inventory.Service.csproj
+        arguments: '--source $(Build.ArtifactStagingDirectory)/packages'
     
     - task: DotNetCoreCLI@2
+      displayName: 'Build microservices apis'
       inputs:
         command: 'build'
-        projects: '**/src/**/*.csproj'
+        projects: |
+          Play.Catalog/src/Play.Catalog.Service/Play.Catalog.Service.csproj
+          PLAY.INVENTORY/src/Play.Inventory.Service/Play.Inventory.Service.csproj
     - task: DotNetCoreCLI@2
+      displayName: 'Test microservices api'
       inputs:
         command: 'test'
-        projects: '**/*UnitTests/*.csproj'
+        projects: |
+          PLAY.INVENTORY/Play.Inventory.UnitTests/Play.Inventory.UnitTests.csproj
+          Play.Catalog/Play.Catalog.UnitTests/Play.Catalog.UnitTests.csproj
         arguments: '--collect "Code coverage"'
