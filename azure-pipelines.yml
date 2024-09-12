@@ -111,6 +111,6 @@ stages:
         # Build and push Docker images using Docker Compose
         - script: |
             ls -a
-            docker-compose build PLAY.INFA/docker-compose.yml
-            docker-compose push PLAY.INFR/docker-compose.yml
+            docker-compose build PLAY.INFRA/docker-compose.yml
+            docker-compose push PLAY.INFRA/docker-compose.yml
           displayName: 'Build and Push Docker Images'
