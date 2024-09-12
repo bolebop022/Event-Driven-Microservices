@@ -113,6 +113,6 @@ stages:
             ls -a
             cd PLAY.INFRA
             ls -a
-            docker-compose build docker-compose.yml
-            docker-compose push docker-compose.yml
+            docker-compose build -f docker-compose.yml
+            docker-compose push -f docker-compose.yml
           displayName: 'Build and Push Docker Images'
