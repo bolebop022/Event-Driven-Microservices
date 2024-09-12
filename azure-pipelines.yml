@@ -13,6 +13,14 @@ stages:
     pool:
       name: WSL-Ubuntu
     steps:
+    # Prepare sonarqube
+    - task: SonarQubePrepare@6
+      inputs:
+        SonarQube: 'Microservices'
+        scannerMode: 'MSBuild'
+        projectKey: 'Microservices_Deployment_Microservices_Deployment'
+        projectName: 'Microservices'
+
     # Restore packages for the custom packages first
     - task: DotNetCoreCLI@2
       displayName: 'Restore resources for custom packages'
@@ -30,7 +38,7 @@ stages:
           PLAY.COMMON/src/Play.Common/Play.Common.csproj
           Play.Catalog/src/Play.Catalog.Contracts/Play.Catalog.Contracts.csproj
         arguments: '--output $(Build.ArtifactStagingDirectory)'
-        
+
     # Create packages folder and move .nupkg files
     - script: |
         mkdir -p $(Build.ArtifactStagingDirectory)/packages
@@ -65,6 +73,14 @@ stages:
         projects: |
           Play.Catalog/src/Play.Catalog.Service/Play.Catalog.Service.csproj
           PLAY.INVENTORY/src/Play.Inventory.Service/Play.Inventory.Service.csproj
+    - task: SonarQubeAnalyze@6
+      inputs:
+        jdkversion: 'JAVA_HOME'
+
+    - task: SonarQubePublish@6
+      inputs:
+        pollingTimeoutSec: '300'
+    
     - task: DotNetCoreCLI@2
       displayName: 'Test microservices api'
       inputs:
