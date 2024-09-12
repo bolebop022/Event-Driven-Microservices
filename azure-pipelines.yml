@@ -103,10 +103,10 @@ stages:
           inputs:
             containerRegistry: 'PlayEconomy Microservices Container'
             command: 'login'
-        - script: |
-            sudo apt-get update
-            sudo apt-get install docker-compose -y
-          displayName: 'Install Docker Compose'
+        # - script: |
+        #     sudo apt-get update
+        #     sudo apt-get install docker-compose -y
+        #   displayName: 'Install Docker Compose'
 
         # Build and push Docker images using Docker Compose
         - script: |
