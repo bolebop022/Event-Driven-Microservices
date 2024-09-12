@@ -30,6 +30,12 @@ stages:
           PLAY.COMMON/src/Play.Common/Play.Common.csproj
           Play.Catalog/src/Play.Catalog.Contracts/Play.Catalog.Contracts.csproj
         arguments: '--output $(Build.ArtifactStagingDirectory)/packages'
+    
+    # Debug the artifact staging directory
+    - script: |
+        echo "Listing contents of $(Build.ArtifactStagingDirectory)"
+        ls -la $(Build.ArtifactStagingDirectory)
+      displayName: 'List Artifact Staging Directory'
 
     - task: PublishBuildArtifacts@1
       displayName: 'Publish custom packages'
