@@ -91,3 +91,29 @@ stages:
           PLAY.INVENTORY/Play.Inventory.UnitTests/Play.Inventory.UnitTests.csproj
           Play.Catalog/Play.Catalog.UnitTests/Play.Catalog.UnitTests.csproj
         arguments: '--collect "Code coverage"'
+      continueOnError: true
+
+- stage: Push
+  jobs:
+    - job: PushToRepositories
+      pool: WSL-Ubuntu
+      steps:
+        - task: Docker@2
+          displayName: 'Login to ACR'
+          inputs:
+            containerRegistry: 'PlayEconomy Microservices Container'
+            command: 'login'
+        # - script: |
+        #     sudo apt-get update
+        #     sudo apt-get install docker-compose -y
+        #   displayName: 'Install Docker Compose'
+
+        # Build and push Docker images using Docker Compose
+        - script: |
+            ls -a
+            cd PLAY.INFRA
+            ls -a
+            docker login -u playeconomy -p rDGd+84ACtTFoZY1XROxnOpSgIitjv1UFMgX/QKlSN+ACRAB/yXE playeconomymicroservices.azurecr.io
+            docker-compose -f docker-compose.yml build
+            docker-compose -f docker-compose.yml push
+          displayName: 'Build and Push Docker Images'
