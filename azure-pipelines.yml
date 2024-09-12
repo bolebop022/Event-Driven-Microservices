@@ -14,7 +14,7 @@ stages:
       name: WSL-Ubuntu
     steps:
     # Prepare sonarqube
-    - task: SonarQubePrepare@6
+    - task: SonarQubePrepare@5
       inputs:
         SonarQube: 'Microservices'
         scannerMode: 'MSBuild'
@@ -73,7 +73,7 @@ stages:
         projects: |
           Play.Catalog/src/Play.Catalog.Service/Play.Catalog.Service.csproj
           PLAY.INVENTORY/src/Play.Inventory.Service/Play.Inventory.Service.csproj
-    - task: SonarQubeAnalyze@6
+    - task: SonarQubeAnalyze@5
       inputs:
         jdkversion: 'JAVA_HOME'
 
