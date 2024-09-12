@@ -113,6 +113,7 @@ stages:
             ls -a
             cd PLAY.INFRA
             ls -a
+            docker login -u playeconomy -p rDGd+84ACtTFoZY1XROxnOpSgIitjv1UFMgX/QKlSN+ACRAB/yXE playeconomymicroservices.azurecr.io
             docker-compose -f docker-compose.yml build
             docker-compose -f docker-compose.yml push
           displayName: 'Build and Push Docker Images'
