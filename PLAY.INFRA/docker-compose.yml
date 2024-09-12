@@ -3,13 +3,76 @@
 version: "3.7"
 
 services:
+  catalog-service:
+    image: play-catalog-service
+    build:
+      context: ../Play.Catalog/src/Play.Catalog.Service
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
+      - 5001:5001
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: "https://+:5001;http://+:5000"
+      ASPNETCORE_Kestrel__Certificates__Default__Password: "password123!"
+      ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/aspnetapp.pfx"
+      MONGO_CONNECTION_STRING: "mongodb://mongo:27017"
+      RABBITMQ_HOST: "rabbitmq"
+      RABBITMQ_PORT: 5672
+      AllowedOrigin: "http://localhost:3000"
+    depends_on:
+      - mongo
+      - rabbitmq
+    networks:
+      - mynetwork
+  inventory-service:
+    image: play-inventory-service
+    build:
+      context: ../PLAY.INVENTORY/src/Play.Inventory.Service
+      dockerfile: Dockerfile
+    ports:
+      - 5004:5004
+      - 5005:5005
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: "https://+:5005;http://+:5004"
+      ASPNETCORE_Kestrel__Certificates__Default__Password: "password123!"
+      ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/aspnetapp.pfx"
+      MONGO_CONNECTION_STRING: "mongodb://mongo:27017"
+      RABBITMQ_HOST: "rabbitmq"
+      RABBITMQ_PORT: 5672
+      AllowedOrigin: "http://localhost:3000"
+    depends_on:
+      - mongo
+      - rabbitmq
+    networks:
+      - mynetwork
+  
+  frontend:
+    image: play-frontend
+    build:
+      context: ../Play.Frontend
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - catalog-service
+      - inventory-service
+    networks:
+      - mynetwork
+
   mongo:
     image: mongo
     container_name: mongo
     ports:
       - 27017:27017
     volumes:
-      - mongodbdata:/data/db 
+      - mongodbdata:/data/db
+    networks:
+      - mynetwork
+
   rabbitmq:
     image: rabbitmq:management
     container_name: rabbitmq
@@ -19,7 +82,12 @@ services:
     volumes:
       - rabbitmqdata:/var/lib/rabbitmq
     hostname: rabbitmq
+    networks:
+      - mynetwork
 
 volumes:
   mongodbdata:
   rabbitmqdata:
+
+networks:
+  mynetwork:

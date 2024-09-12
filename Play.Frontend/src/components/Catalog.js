@@ -20,16 +20,25 @@ export class Catalog extends Component
 
   async populateItems()
   {
-    fetch(`${window.CATALOG_ITEMS_API_URL}`)
-      .then(response => { 
-        return response.json(); 
-      })
-      .then(returnedItems => this.setState({ items: returnedItems, loading: false, loadedSuccess: true }))
-      .catch(err =>
-      {
-        console.log(err);
-        this.setState({ items: [], loading: false, loadedSuccess: false })
-      });
+    try {
+      const response = await fetch(`${window.CATALOG_SERVICE_URL}/items`);
+      const returnedItems = await response.json();
+      this.setState({ items: returnedItems, loading: false, loadedSuccess: true });
+    } catch (err) {
+      console.error(err);
+      this.setState({ items: [], loading: false, loadedSuccess: false });
+    }
+
+    // fetch(`${window.CATALOG_SERVICE_URL}/items`)
+    //   .then(response => { 
+    //     return response.json(); 
+    //   })
+    //   .then(returnedItems => this.setState({ items: returnedItems, loading: false, loadedSuccess: true }))
+    //   .catch(err =>
+    //   {
+    //     console.log(err);
+    //     this.setState({ items: [], loading: false, loadedSuccess: false })
+    //   });
   }
 
   addItemToState = item =>
