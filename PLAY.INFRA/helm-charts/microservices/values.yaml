@@ -1,0 +1,39 @@
+global:
+  mongodb:
+    connectionString: "mongodb://mongo:27017"
+  rabbitmq:
+    host: "rabbitmq"
+    port: 5672
+
+catalogService:
+  name: catalog-service
+  image: playeconomymicroservices.azurecr.io/play-catalog-service
+  tag: latest
+  port: 5000
+  securePort: 5001
+
+inventoryService:
+  name: inventory-service
+  image: playeconomymicroservices.azurecr.io/play-inventory-service
+  tag: latest
+  port: 5004
+  securePort: 5005
+
+frontend:
+  name: frontend
+  image: playeconomymicroservices.azurecr.io/play-frontend
+  tag: latest
+  port: 3000
+
+mongodb:
+  name: mongodb
+  image: mongo
+  tag: latest
+  port: 27017
+
+rabbitmq:
+  name: rabbitmq
+  image: rabbitmq
+  tag: management
+  port: 5672
+  managementPort: 15672
