@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.inventoryService.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.inventoryService.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.inventoryService.name }}
+    spec:
+      containers:
+      - name: {{ .Values.inventoryService.name }}
+        image: {{ .Values.inventoryService.image }}:{{ .Values.inventoryService.tag }}
+        ports:
+        - containerPort: {{ .Values.inventoryService.port }}
+        - containerPort: {{ .Values.inventoryService.securePort }}
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Development
+        - name: ASPNETCORE_URLS
+          value: "https://+:{{ .Values.inventoryService.securePort }};http://+:{{ .Values.inventoryService.port }}"
+        - name: ASPNETCORE_Kestrel__Certificates__Default__Password
+          value: "password123!"
+        - name: ASPNETCORE_Kestrel__Certificates__Default__Path
+          value: "/https/aspnetapp.pfx"
+        - name: MONGO_CONNECTION_STRING
+          value: {{ .Values.global.mongodb.connectionString }}
+        - name: RABBITMQ_HOST
+          value: {{ .Values.global.rabbitmq.host }}
+        - name: RABBITMQ_PORT
+          value: "{{ .Values.global.rabbitmq.port }}"
+        - name: AllowedOrigin
+          value: "http://localhost:3000"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.inventoryService.name }}
+spec:
+  type: LoadBalancer
+  selector:
+    app: {{ .Values.inventoryService.name }}
+  ports:
+    - name: http
+      protocol: TCP
+      port: {{ .Values.inventoryService.port }}
+      targetPort: {{ .Values.inventoryService.port }}
+    - name: https
+      protocol: TCP
+      port: {{ .Values.inventoryService.securePort }}
+      targetPort: {{ .Values.inventoryService.securePort }}
