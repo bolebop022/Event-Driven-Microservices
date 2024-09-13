@@ -51,15 +51,15 @@ public class ItemsControllerTests
         // Arrange
         var expectedItem = new Item { Id = Guid.NewGuid(), Name = "Potion", Description = "Restores HP", Price = 9, CreatedDate = DateTimeOffset.UtcNow };
 
+        // Set up the repository to return the expected item when GetAsync is called with the item's ID
         mockItemsRepository.Setup(repo => repo.GetAsync(expectedItem.Id))
                             .ReturnsAsync(expectedItem);
 
         // Act
         var result = await controller.GetByIdAsync(expectedItem.Id);
 
-        // Assert
-        var actionResult = Assert.IsType<OkObjectResult>(result.Result);
-        var actualItem = Assert.IsType<ItemDto>(actionResult.Value);
+        // Assert 
+        var actualItem = Assert.IsType<ItemDto>(result.Value);
         Assert.Equal(expectedItem.Id, actualItem.Id);
     }
 
