@@ -26,7 +26,7 @@ frontend:
   port: 3000
 
 mongodb:
-  name: mongodb
+  name: mongo
   image: mongo
   tag: latest
   port: 27017

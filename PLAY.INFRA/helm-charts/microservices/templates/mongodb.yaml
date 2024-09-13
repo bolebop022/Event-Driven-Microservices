@@ -18,10 +18,10 @@ spec:
         ports:
         - containerPort: {{ .Values.mongodb.port }}
         volumeMounts:
-        - name: mongodb-storage
+        - name: mongodbdata
           mountPath: /data/db
       volumes:
-      - name: mongodb-storage
+      - name: mongodbdata
         emptyDir: {}
 ---
 apiVersion: v1
