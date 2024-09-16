@@ -1,9 +1,9 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ .Values.mongodb.name }}
 spec:
-  replicas: 2
+  serviceName: {{ .Values.mongodb.name }}--headless
   selector:
     matchLabels:
       app: {{ .Values.mongodb.name }}
@@ -22,14 +22,15 @@ spec:
           mountPath: /data/db
       volumes:
       - name: mongodbdata
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: {{ .Values.mongodb.name }}-pvc
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Values.mongodb.name }}
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: {{ .Values.mongodb.name }}
   ports:
@@ -37,3 +38,31 @@ spec:
       protocol: TCP
       port: {{ .Values.mongodb.port }}
       targetPort: {{ .Values.mongodb.port }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.mongodb.name }}--headless
+  labels:
+    app: {{ .Values.mongodb.name }}
+spec:
+  type: ClusterIP
+  clusterIP: None # Headless service for StatefulSet
+  selector:
+    app: {{ .Values.mongodb.name }}
+  ports:
+    - name: mongo
+      protocol: TCP
+      port: {{ .Values.mongodb.port }}
+      targetPort: {{ .Values.mongodb.port }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.mongodb.name }}-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Gi # Adjust the size as needed
