@@ -24,7 +24,7 @@ export class Inventory extends Component
     }
 
     this.setState({ items: [], renderItems: true, loading: true, loadedSuccess: false })
-    fetch(`${window.INVENTORY_ITEMS_API_URL}?userId=${this.state.userId}`)
+    fetch(`${process.env.INVENTORY_SERVICE_URL}items?userId=${this.state.userId}`)
       .then(response => response.json())
       .then(returnedItems => this.setState({ items: returnedItems, loading: false, loadedSuccess: true }))
       .catch(err =>
