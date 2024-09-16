@@ -21,7 +21,7 @@ export class Catalog extends Component
   async populateItems()
   {
     try {
-      const response = await fetch(`${window.CATALOG_SERVICE_URL}/items`);
+      const response = await fetch(`${process.env.CATALOG_SERVICE_URL}/items`);
       const returnedItems = await response.json();
       this.setState({ items: returnedItems, loading: false, loadedSuccess: true });
     } catch (err) {
@@ -61,7 +61,7 @@ export class Catalog extends Component
     let confirmDeletion = window.confirm('Do you really wish to delete it?');
     if (confirmDeletion)
     {
-      fetch(`${window.CATALOG_ITEMS_API_URL}/${id}`, {
+      fetch(`${process.env.CATALOG_SERVICE_URL}items/${id}`, {
         method: 'delete',
         headers: {
           'Content-Type': 'application/json'
