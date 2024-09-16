@@ -34,7 +34,7 @@ spec:
   selector:
     app: {{ .Values.rabbitmq.name }}
   ports:
-    - name: amqp-port
+    - name: rabbitmq
       protocol: TCP
       port: {{ .Values.rabbitmq.port }}
       targetPort: {{ .Values.rabbitmq.port }}
