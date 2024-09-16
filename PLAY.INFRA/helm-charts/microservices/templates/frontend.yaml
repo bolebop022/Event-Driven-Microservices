@@ -24,8 +24,6 @@ spec:
           value: {{ .Values.frontend.catalogServiceUrl }}
         - name: INVENTORY_SERVICE_URL
           value: {{ .Values.frontend.inventoryServiceUrl }}
-        - name: RABBITMQ_URL
-          value: {{ .Values.frontend.rabbitmqUrl }}
 ---
 apiVersion: v1
 kind: Service
