@@ -34,7 +34,7 @@ spec:
         - name: RABBITMQ_PORT
           value: "{{ .Values.global.rabbitmq.port }}"
         - name: AllowedOrigin
-          value: "http://playeconomy:3000"
+          value: "http://frontend:3000"
 ---
 apiVersion: v1
 kind: Service
