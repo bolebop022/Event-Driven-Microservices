@@ -20,6 +20,7 @@ stages:
         scannerMode: 'MSBuild'
         projectKey: 'Microservices_Deployment_Microservices_Deployment'
         projectName: 'Microservices'
+      continueOnError: true
 
     # Restore packages for the custom packages first
     - task: DotNetCoreCLI@2
