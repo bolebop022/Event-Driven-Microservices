@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ .Values.mongodb.name }}
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: {{ .Values.mongodb.name }}
