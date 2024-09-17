@@ -99,7 +99,7 @@ namespace Play.Inventory.Service
 
             services.AddHttpClient<CatalogClient>(client =>
             {
-                client.BaseAddress = new Uri("http://catalog-service.default.svc.cluster.local");
+                client.BaseAddress = new Uri("http://catalog-service:5000");
                 client.Timeout = TimeSpan.FromSeconds(35); // Set other HttpClient options if needed
             })
             .AddTransientHttpErrorPolicy(builder => builder.Or<TimeoutRejectedException>().WaitAndRetryAsync(
