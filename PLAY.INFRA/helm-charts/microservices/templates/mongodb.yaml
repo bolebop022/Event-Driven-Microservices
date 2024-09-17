@@ -15,8 +15,6 @@ spec:
       containers:
       - name: {{ .Values.mongodb.name }}
         image: {{ .Values.mongodb.image }}:{{ .Values.mongodb.tag }}
-        # command: ["mongod"] 
-        # args: ["--dbpath=/data/db"]  
         ports:
         - containerPort: {{ .Values.mongodb.port }}
         volumeMounts:
@@ -24,15 +22,14 @@ spec:
           mountPath: /data/db
       volumes:
       - name: mongodbdata
-        persistentVolumeClaim:
-          # claimName: {{ .Values.mongodb.name }}-pvc
-          emptyDir: {}
+        emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Values.mongodb.name }}
 spec:
+  type: ClusterIP
   selector:
     app: {{ .Values.mongodb.name }}
   ports:
@@ -40,15 +37,3 @@ spec:
       protocol: TCP
       port: {{ .Values.mongodb.port }}
       targetPort: {{ .Values.mongodb.port }}
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: {{ .Values.mongodb.name }}-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: azurefile
-  resources:
-    requests:
-      storage: 1Gi # Adjust the size as needed
