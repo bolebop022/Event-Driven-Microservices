@@ -49,6 +49,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
+  storageClassName: azurefile
   resources:
     requests:
       storage: 1Gi # Adjust the size as needed
