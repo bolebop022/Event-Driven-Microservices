@@ -15,11 +15,13 @@ spec:
       containers:
       - name: {{ .Values.mongodb.name }}
         image: {{ .Values.mongodb.image }}:{{ .Values.mongodb.tag }}
+        command: ["mongod"] # Note here
+        args: ["--dbpath=/data/mongoaz"] # Note here 
         ports:
         - containerPort: {{ .Values.mongodb.port }}
         volumeMounts:
         - name: mongodbdata
-          mountPath: /data/db
+          mountPath: /data/mongoaz
       volumes:
       - name: mongodbdata
         persistentVolumeClaim:
