@@ -15,8 +15,8 @@ spec:
       containers:
       - name: {{ .Values.mongodb.name }}
         image: {{ .Values.mongodb.image }}:{{ .Values.mongodb.tag }}
-        command: ["mongod"] # Note here
-        args: ["--dbpath=/data/db"] # Note here 
+        # command: ["mongod"] 
+        # args: ["--dbpath=/data/db"]  
         ports:
         - containerPort: {{ .Values.mongodb.port }}
         volumeMounts:
@@ -25,7 +25,8 @@ spec:
       volumes:
       - name: mongodbdata
         persistentVolumeClaim:
-          claimName: {{ .Values.mongodb.name }}-pvc
+          # claimName: {{ .Values.mongodb.name }}-pvc
+          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
