@@ -25,8 +25,8 @@ frontend:
   image: playeconomymicroservices.azurecr.io/play-frontend
   tag: latest
   port: 3000
-  catalogServiceUrl: "https://catalog-service.default.svc.cluster.local:5001"
-  inventoryServiceUrl: "https://inventory-service.default.svc.cluster.local:5005"
+  catalogServiceUrl: "https://catalog-service:5001"
+  inventoryServiceUrl: "https://inventory-service:5005"
 
 mongodb:
   name: mongo
