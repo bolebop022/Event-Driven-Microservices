@@ -52,7 +52,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: managed-csi
+  storageClassName: azurefile
   resources:
     requests:
       storage: 1Gi # Adjust the size as needed
