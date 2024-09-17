@@ -2,11 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.mongodb.name }}
+  labels: 
+    app: {{ .Values.mongodb.name}}
 spec:
-  serviceName: {{ .Values.mongodb.name }}
-  labels:
-    app:
-      {{ .Values.mongodb.name }}
+  replicas: 1
   selector:
     matchLabels:
       app: {{ .Values.mongodb.name }}
@@ -15,7 +14,6 @@ spec:
       labels:
         app: {{ .Values.mongodb.name }}
     spec:
-      replicas: 1
       containers:
       - name: {{ .Values.mongodb.name }}
         image: {{ .Values.mongodb.image }}:{{ .Values.mongodb.tag }}
