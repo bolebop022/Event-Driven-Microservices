@@ -1,11 +1,10 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ .Values.mongodb.name }}
-  labels: 
-    app: {{ .Values.mongodb.name}}
 spec:
-  replicas: 1
+  serviceName: {{ .Values.mongodb.name }}--headless
+  replicas: 2
   selector:
     matchLabels:
       app: {{ .Values.mongodb.name }}
@@ -34,7 +33,7 @@ metadata:
   labels:
     app: {{ .Values.mongodb.name }}
 spec:
-  type: ClusterIP
+  clusterIP: None
   selector:
     app: {{ .Values.mongodb.name }}
   ports:
