@@ -31,7 +31,7 @@ frontend:
 mongodb:
   name: mongo
   image: mongo
-  tag: latest
+  tag: 7
   port: 27017
 
 rabbitmq:
