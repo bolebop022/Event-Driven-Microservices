@@ -4,6 +4,7 @@ global:
   rabbitmq:
     host: "rabbitmq"
     port: 5672
+  allowedOrigin: "http://playeconomy:3000"
 
 catalogService:
   name: catalog-service
