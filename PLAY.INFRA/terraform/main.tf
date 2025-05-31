@@ -49,11 +49,7 @@ resource "azurerm_kubernetes_cluster" "playeconomy_cluster" {
 
   sku_tier = "Free"
 
-  tags = {
-    cg_DM         = "swati.yadav@nagarro.com"
-    cg_project     = "DevOps Fresher Training"
-    cg_environment = "Dev"
-  }
+
 }
 
 resource "azurerm_role_assignment" "aks_acr" {
